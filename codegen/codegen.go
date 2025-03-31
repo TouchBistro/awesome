@@ -200,6 +200,7 @@ import (
 	{{- range .Services}}
 	"github.com/aws/aws-sdk-go-v2/service/{{ printf "%v" . }}"
 	{{- end}}
+	"github.com/aws/aws-sdk-go-v2/aws/retry"
 )
 
 var cmap sync.Map
@@ -225,6 +226,19 @@ func Client(provider providers.CredsProvider, optFns ...func(*{{ $svc }}.Options
 func Must(provider providers.CredsProvider, optFns ...func(*{{ $svc }}.Options)) *{{ $svc }}.Client {
 
 	client, err := Client(provider,optFns...)
+	if err != nil {
+		panic(err)
+	}
+	return client
+}
+
+// Must wraps the _{{ $svc }}.Client( ) function & panics if a non-nil error is returned.
+func MustWithRetry(provider providers.CredsProvider, optFns ...func(*{{ $svc }}.Options)) *{{ $svc }}.Client {
+	optFns = append(optFns, func(o *{{ $svc }}.Options) {
+		o.Retryer = retry.AddWithMaxBackoffDelay(retry.NewStandard(), time.Second*5)
+	})
+
+	client, err := Client(provider, optFns...)
 	if err != nil {
 		panic(err)
 	}

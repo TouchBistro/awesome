@@ -51,7 +51,7 @@ jobs:
       - cache-setup
       - lint-test 
       - codegen
-      - build-code
+      - build
   release:
     executor: docker-go
     steps:

@@ -32,6 +32,9 @@ commands:
       - aws-cli/setup:
           role_arn: $AWS_IAM_ROLE
           role_session_name: circle-job
+      - run: 
+          name: test aws cli status
+          command: aws sts get-caller-identity
       - run:
           name: Run test
           command: go test ./...

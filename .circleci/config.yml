@@ -54,8 +54,8 @@ jobs:
     executor: docker-go
     steps:
       - aws-cli/setup:
-          role_arn: $AWS_IAM_ROLE
-          role_session_name: circle-job
+          role_arn: arn:aws:iam::651264383976:role/buildit/circle-role
+          role_session_name: awesome-tests
       - checkout 
       - cache-setup
       - lint-test 

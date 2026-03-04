@@ -431,6 +431,8 @@ import (
 
 )
 ```
+> **Note:** `awesome` does not declare AWS service modules as dependencies in its own `go.mod`. After adding any `clients/_<service>` import, run `go mod tidy` (or `go get github.com/aws/aws-sdk-go-v2/service/<service>`) in your project to have the required AWS service module added to your `go.mod`.
+
 All client packages expose `4` helper functions: `Client()`, `Must()`, `Delete()` and `Refresh()`
 
 The `Client` function returns a singleton AWS service client. It uses the supplied `providers.CredsProvdier` 

@@ -1,4 +1,4 @@
-# Contributing to `aws-ccp-go`
+# Contributing to `awesome`
 
 ## **Extending & Feature Requests:**
 
@@ -46,7 +46,7 @@ When making a PR, make sure:
 
 ## Maintainers:
 
-You can contact, send bug reports or features requests to the `aws-ccp-go` maintainers 
+You can contact, send bug reports or features requests to the `awesome` maintainers 
 by sending an email at: devops@touchbistro.com 
 
 Members of the *TouchBistro* Github org can alternatively create a ticket in the `DEVOPS` Jira project 

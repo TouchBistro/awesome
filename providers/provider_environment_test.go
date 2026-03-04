@@ -3,15 +3,14 @@ package providers
 import (
 	"context"
 	"errors"
-	"os"
 	"testing"
 )
 
 // TestNewDefaultCredsProviderSuccessful tests
 func TestNewEnironmentCredsProvider(t *testing.T) {
 
-	os.Setenv("AWS_ACCESS_KEY_ID", "invalid")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "invalid")
+	t.Setenv("AWS_ACCESS_KEY_ID", "invalid")
+	t.Setenv("AWS_SECRET_ACCESS_KEY", "invalid")
 	_, err := NewEnvironmentCredsProvider(context.Background(), "def1", WithRegion("us-east-1"))
 	if err != nil {
 		t.Error("error = nil expected")
@@ -33,8 +32,8 @@ func TestNewEnvironmentCredsProviderName(t *testing.T) {
 func TestNewEnvironmentCredsProviderAccessKeys(t *testing.T) {
 
 	// no AWS Access Key From variable supplied & default is also unset
-	unset("AWS_ACCESS_KEY_ID")
-	unset("CUSTOM_ACCESS_KEY_ID")
+	unset(t, "AWS_ACCESS_KEY_ID")
+	unset(t, "CUSTOM_ACCESS_KEY_ID")
 	_, err := NewEnvironmentCredsProvider(context.Background(), "def1")
 	if err == nil {
 		t.Error("expected error != nil, found error == nil")
@@ -47,8 +46,8 @@ func TestNewEnvironmentCredsProviderAccessKeys(t *testing.T) {
 	}
 
 	// Custom AWS Access Key From variable supplied & but all variables unset
-	unset("AWS_ACCESS_KEY_ID")
-	unset("CUSTOM_ACCESS_KEY_ID")
+	unset(t, "AWS_ACCESS_KEY_ID")
+	unset(t, "CUSTOM_ACCESS_KEY_ID")
 	_, err = NewEnvironmentCredsProvider(context.Background(), "def1", WithAccessKeyIdFrom("CUSTOM_ACCESS_KEY_ID"))
 	if err == nil {
 		t.Error("expected error != nil, found error == nil")
@@ -61,8 +60,8 @@ func TestNewEnvironmentCredsProviderAccessKeys(t *testing.T) {
 	}
 
 	// No AWS Secret Access Key From variable supplied & default is also unset
-	os.Setenv("AWS_ACCESS_KEY_ID", "invalid")
-	unset("AWS_SECRET_ACCESS_KEY")
+	t.Setenv("AWS_ACCESS_KEY_ID", "invalid")
+	unset(t, "AWS_SECRET_ACCESS_KEY")
 	_, err = NewEnvironmentCredsProvider(context.Background(), "def1")
 
 	if err == nil {
@@ -76,8 +75,8 @@ func TestNewEnvironmentCredsProviderAccessKeys(t *testing.T) {
 		}
 	}
 
-	os.Setenv("AWS_ACCESS_KEY_ID", "invalid")
-	unset("AWS_SECRET_ACCESS_KEY")
+	t.Setenv("AWS_ACCESS_KEY_ID", "invalid")
+	unset(t, "AWS_SECRET_ACCESS_KEY")
 	_, err = NewEnvironmentCredsProvider(context.Background(), "def1")
 	if err == nil {
 		t.Error("expected error != nil, found error == nil")
@@ -92,14 +91,14 @@ func TestNewEnvironmentCredsProviderAccessKeys(t *testing.T) {
 
 func TestNewEnvironmentCredsProviderRegion(t *testing.T) {
 
-	os.Setenv("AWS_ACCESS_KEY_ID", "invalid")
-	os.Setenv("AWS_SECRET_ACCESS_KEY", "invalid")
+	t.Setenv("AWS_ACCESS_KEY_ID", "invalid")
+	t.Setenv("AWS_SECRET_ACCESS_KEY", "invalid")
 
 	// testing AWS_REGION over defaults
 	EUSouth2 := "eu-south-2"
-	unset("AWS_REGION")
-	unset("CUSTOM_REGION")
-	os.Setenv("AWS_REGION", EUSouth2)
+	unset(t, "AWS_REGION")
+	unset(t, "CUSTOM_REGION")
+	t.Setenv("AWS_REGION", EUSouth2)
 	provider, err := NewEnvironmentCredsProvider(context.Background(), "def1")
 	if err != nil {
 		t.Error("error = nil expected")
@@ -113,9 +112,9 @@ func TestNewEnvironmentCredsProviderRegion(t *testing.T) {
 	// testing AWS_REGION over WithRegion(r)
 	USWest1 := "us-west-1"
 	CACentral1 := "ca-central-1"
-	unset("AWS_REGION")
-	unset("CUSTOM_REGION")
-	os.Setenv("AWS_REGION", USWest1)
+	unset(t, "AWS_REGION")
+	unset(t, "CUSTOM_REGION")
+	t.Setenv("AWS_REGION", USWest1)
 	provider, err = NewEnvironmentCredsProvider(context.Background(), "def2", WithRegion(CACentral1))
 	if err != nil {
 		t.Error("error = nil expected")
@@ -128,10 +127,10 @@ func TestNewEnvironmentCredsProviderRegion(t *testing.T) {
 
 	// testing region from custom env var
 	EUCentral1 := "eu-central-1"
-	unset("AWS_REGION")
-	unset("CUSTOM_REGION")
-	os.Setenv("AWS_REGION", USWest1)
-	os.Setenv("CUSTOM_REGION", EUCentral1)
+	unset(t, "AWS_REGION")
+	unset(t, "CUSTOM_REGION")
+	t.Setenv("AWS_REGION", USWest1)
+	t.Setenv("CUSTOM_REGION", EUCentral1)
 	provider, err = NewEnvironmentCredsProvider(context.Background(), "def2", WithRegionFrom("CUSTOM_REGION"), WithRegion(USWest1))
 	if err != nil {
 		t.Error("error = nil expected")
@@ -144,8 +143,8 @@ func TestNewEnvironmentCredsProviderRegion(t *testing.T) {
 
 	// testing region from WithRegion()
 	EUSouth1 := "eu-south-1"
-	unset("AWS_REGION")
-	unset("CUSTOM_REGION")
+	unset(t, "AWS_REGION")
+	unset(t, "CUSTOM_REGION")
 	provider, err = NewEnvironmentCredsProvider(context.Background(), "def2", WithRegion(EUSouth1))
 	if err != nil {
 		t.Error("error = nil expected")
@@ -157,8 +156,8 @@ func TestNewEnvironmentCredsProviderRegion(t *testing.T) {
 	}
 
 	// testing region from WithDefautRegion()
-	unset("AWS_REGION")
-	unset("CUSTOM_REGION")
+	unset(t, "AWS_REGION")
+	unset(t, "CUSTOM_REGION")
 	provider, err = NewEnvironmentCredsProvider(context.Background(), "def2", WithDefaultRegion())
 	if err != nil {
 		t.Error("error = nil expected")
@@ -170,8 +169,8 @@ func TestNewEnvironmentCredsProviderRegion(t *testing.T) {
 	}
 
 	// testing region from defaults
-	unset("AWS_REGION")
-	unset("CUSTOM_REGION")
+	unset(t, "AWS_REGION")
+	unset(t, "CUSTOM_REGION")
 	provider, err = NewEnvironmentCredsProvider(context.Background(), "def2")
 	if err != nil {
 		t.Error("error = nil expected")
@@ -185,6 +184,6 @@ func TestNewEnvironmentCredsProviderRegion(t *testing.T) {
 }
 
 // unset environment variable
-func unset(envvar string) {
-	os.Setenv(envvar, "")
+func unset(t *testing.T, envvar string) {
+	t.Setenv(envvar, "")
 }

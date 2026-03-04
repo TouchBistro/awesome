@@ -1,8 +1,8 @@
 
 # Implicit configuration of `default` provider using command-line parameters
- When aws-ccp-go clients import this piackage with a blank import, the following command line flags are parsed & used to configure the "default" creds provider.
+ When awesome clients import this piackage with a blank import, the following command line flags are parsed & used to configure the "default" creds provider.
 
- Importing this package is non-intrusive, as it should not affect any command-line processing for the client code. However, some third-party packages will throw an error if the flags supplied at runtime to configure aws-ccp-go are not defined & registered with those packages. So any subset of flags that the client code intends on using may also require to be configured with the client code's command-line processing library.
+ Importing this package is non-intrusive, as it should not affect any command-line processing for the client code. However, some third-party packages will throw an error if the flags supplied at runtime to configure awesome are not defined & registered with those packages. So any subset of flags that the client code intends on using may also require to be configured with the client code's command-line processing library.
 
  # General
 

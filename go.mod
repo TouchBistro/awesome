@@ -1,6 +1,6 @@
-module github.com/TouchBistro/aws-ccp-go
+module github.com/TouchBistro/awesome
 
-go 1.21
+go 1.25
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.27.0

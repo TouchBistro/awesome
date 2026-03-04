@@ -2,11 +2,6 @@
 
 # Get all dependencies
 setup:
-# Only install if missing
-ifeq (,$(wildcard bin/golangci-lint))
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.59.1
-endif
-
 	go mod tidy
 .PHONY: setup
 
@@ -24,7 +19,7 @@ build:
 
 # Run the linter
 lint:
-	./bin/golangci-lint run ./...
+	$(shell go env GOPATH)/bin/golangci-lint --concurrency 4 --timeout 10m run ./...
 .PHONY: lint
 
 # Run tests and collect coverage data

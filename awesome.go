@@ -3,7 +3,7 @@ package awscredsprovider
 import (
 	"context"
 
-	"github.com/TouchBistro/aws-ccp-go/providers"
+	"github.com/TouchBistro/awesome/providers"
 )
 
 // Creates a provider named "default" of the type `DefaultCredsProvider`, which uses the AWS SDK default credentials chain.

@@ -196,7 +196,7 @@ package {{ formatPackageName .Package }}
 import (
 	"sync"
 
-	"github.com/TouchBistro/aws-ccp-go/providers"
+	"github.com/TouchBistro/awesome/providers"
 	{{- range .Services}}
 	"github.com/aws/aws-sdk-go-v2/service/{{ printf "%v" . }}"
 	{{- end}}

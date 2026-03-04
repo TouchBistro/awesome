@@ -14,7 +14,7 @@ package _rolesanywhere
 import (
 	"sync"
 
-	"github.com/TouchBistro/aws-ccp-go/providers"
+	"github.com/TouchBistro/awesome/providers"
 	"github.com/aws/aws-sdk-go-v2/service/rolesanywhere"
 )
 

@@ -8,7 +8,7 @@ package awscredsprovider
 //
 //
 //	// intializes a `default` provider using AWS SDK defaults,
-//	_ github.com/TouchBistro/aws-ccp-go
+//	_ github.com/TouchBistro/awesome
 //
 // This provider can be overridden by instantiating a new provider with the
 // same  name, OR used as a base credentials provider for a `AssumeRoleCredsProvider`

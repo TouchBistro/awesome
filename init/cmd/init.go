@@ -3,7 +3,7 @@ package cmd
 import (
 	"context"
 
-	"github.com/TouchBistro/aws-ccp-go/providers"
+	"github.com/TouchBistro/awesome/providers"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -26,11 +26,11 @@ const (
 	fl_roleArn             string = "role-arn"
 )
 
-// When aws-ccp-go clients import this piackage with a blank import, the following command line flags are parsed & used to
+// When awesome clients import this piackage with a blank import, the following command line flags are parsed & used to
 // configure the "default" creds provider.
 //
 // Importing this package is non-intrusive, as it should not affect any command-line processing for the client code.
-// however, some third-party packages will throw an error if the flags supplied at runtime to configure aws-ccp-go are not defined
+// however, some third-party packages will throw an error if the flags supplied at runtime to configure awesome are not defined
 // & registered with those packages. So any subset of flags that the client code intends on using may also require to be configured
 // with the client code's command-line processing library.
 //
@@ -99,7 +99,9 @@ func init() {
 	// ignore unknown flags
 	pflag.CommandLine.ParseErrorsWhitelist.UnknownFlags = true
 	pflag.Parse()
-	viper.BindPFlags(pflag.CommandLine)
+	if err := viper.BindPFlags(pflag.CommandLine); err != nil {
+		panic(err)
+	}
 
 	region := viper.GetString(fl_region)
 	profile := viper.GetString(fl_profile)
@@ -157,13 +159,17 @@ func init() {
 // addHiddenStringFlag defines a pflag string variable that is hidden from help messages
 func addHiddenStringFlag(name, def, usage string) {
 	pflag.String(name, def, usage)
-	pflag.CommandLine.MarkHidden(name)
+	if err := pflag.CommandLine.MarkHidden(name); err != nil {
+		panic(err)
+	}
 }
 
 // addHiddenBoolFlag defines a pflag bool variable that is hidden from help messages
 func addHiddenBoolFlag(name string, def bool, usage string) {
 	pflag.Bool(name, def, usage)
-	pflag.CommandLine.MarkHidden(name)
+	if err := pflag.CommandLine.MarkHidden(name); err != nil {
+		panic(err)
+	}
 }
 
 func supplied(val string) bool {

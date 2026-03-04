@@ -47,6 +47,9 @@ jobs:
   lint-build-test:
     executor: docker-go
     steps:
+      - aws-cli/setup:
+          role_arn: $AWS_IAM_ROLE
+          role_session_name: circle-job
       - checkout 
       - cache-setup
       - lint-test 

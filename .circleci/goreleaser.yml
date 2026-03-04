@@ -1,0 +1,24 @@
+project_name: awesome
+
+builds:
+  - skip: true
+release:
+  github:
+    owner: TouchBistro
+    name: awesome
+  name_template: "{{.ProjectName}}-v{{.Version}}"
+  skip_upload: true 
+  header: |
+    ## Module: {{ .Tag }}
+    This release covers the following updates.
+
+# 3. Generate a clean changelog
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+source:
+  enabled: true

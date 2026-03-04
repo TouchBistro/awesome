@@ -13,21 +13,19 @@ executors:
           aws_auth:
             oidc_role_arn: ${AWS_IAM_ROLE}
 commands:
-  lint-test:
+  cache-setup:
     steps:
-      - checkout 
       - restore_cache:
           name: Restore dep cache
           keys: 
             - *cache_key 
-      - run: 
-         name: Install dependencies
-         command: make setup
       - save_cache:
           name: Save dep cache 
           key: *cache_key
           paths: 
             - ~/go/pkg
+  lint-test:
+    steps:
       - run:
           name: Run linter
           command: make lint
@@ -39,7 +37,7 @@ commands:
       - run: 
           name: Run go generate
           command: go generate ./codegen/codegen.go
-  build-code:
+  build:
     steps: 
       - run: 
           name: Build code 
@@ -49,18 +47,22 @@ jobs:
   lint-build-test:
     executor: docker-go
     steps:
+      - checkout 
+      - cache-setup
       - lint-test 
       - codegen
       - build-code
   release:
     executor: docker-go
-    steps: 
-      - lint-test 
-      - build-code
+    steps:
+      - checkout 
+      - run: 
+          name: Tag release in github
+          command: |
+            .circleci/tagger.sh
       - run:
-          name: tag & release
-          command: echo "releasing this branch"
-
+          name: cut release in github with goreleaser
+          command: goreleaser release -f .circleci/.goreleaser.yaml
 workflows:
   build-test-release:
     jobs:
@@ -74,3 +76,4 @@ workflows:
            branches:
              only:
                - master
+               - feat/devops-8450

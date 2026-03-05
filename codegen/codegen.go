@@ -267,6 +267,7 @@ func main() {
 	contents, err := fetchServicesList(owner, repo, path)
 	if err != nil {
 		fmt.Println("Error fetching list of services from aws-go-sdk-v2 SDK")
+		fmt.Errorf("Root cause:\n%v", err.Error())
 		os.Exit(1)
 	}
 

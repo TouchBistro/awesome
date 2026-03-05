@@ -35,6 +35,9 @@ commands:
       - run: 
           name: test aws cli status
           command: aws sts get-caller-identity
+      - run: 
+          name: test aws cli status
+          command: echo ${AWS_CREDS_PROVIDER_TEST_ASSUME_ROLE}
       - run:
           name: Run test
           command: go test ./...

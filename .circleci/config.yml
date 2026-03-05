@@ -74,7 +74,7 @@ jobs:
             .circleci/tagger.sh
       - run:
           name: cut release in github with goreleaser
-          command: goreleaser release -f .circleci/.goreleaser.yaml
+          command: goreleaser release -f .circleci/goreleaser.yml
 workflows:
   build-test-release:
     jobs:

@@ -84,8 +84,7 @@ workflows:
          context: org-global
          requires:
            - lint-build-test
-         filters: 
+         filters:
            branches:
              only:
                - master
-               - feat/devops-8450

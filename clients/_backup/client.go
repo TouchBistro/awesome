@@ -1,6 +1,6 @@
 // AUTO-GENERATED CODE - DO NOT EDIT
 // See instructions under /codegen/README.md
-// GENERATED ON 2024-06-25 08:17:34
+// GENERATED ON 2026-03-04 19:41:02
 
 // Package _backup provides AWS client management functions for the backup
 // AWS service.

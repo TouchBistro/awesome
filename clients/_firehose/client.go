@@ -1,6 +1,6 @@
 // AUTO-GENERATED CODE - DO NOT EDIT
 // See instructions under /codegen/README.md
-// GENERATED ON 2024-06-25 08:17:34
+// GENERATED ON 2026-03-04 19:41:02
 
 // Package _firehose provides AWS client management functions for the firehose
 // AWS service.
@@ -14,7 +14,7 @@ package _firehose
 import (
 	"sync"
 
-	"github.com/TouchBistro/aws-ccp-go/providers"
+	"github.com/TouchBistro/awesome/providers"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 )
 

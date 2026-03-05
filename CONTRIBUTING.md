@@ -1,4 +1,4 @@
-# Contributing to `aws-ccp-go`
+# Contributing to `awesome`
 
 ## **Extending & Feature Requests:**
 
@@ -13,8 +13,21 @@ in future to cover missing or new configuration options for that provider.
 
 
 ### 2. Clients Function
-Maintenance of AWS client builders implmented in the `client.go` files under each client 
+Maintenance of AWS client builders implmented in the `client.go` files under each client
 package. This is done using the `codegen` auto-generator. More details on it [here](./codegen/README.md)
+
+**Codegen must be re-run and the regenerated `clients/` output committed alongside your change in the following cases:**
+
+- **The codegen template changes** — any edit to the code template in `codegen/codegen.go` must be followed by a regeneration so the committed `client.go` files reflect the new template.
+- **A new AWS service needs to be added** — if a service is missing from `clients/` or has been added to the AWS SDK since the last generation, run codegen to pick it up.
+- **An AWS service package is renamed or removed** — the codegen fetches the current service list from the AWS SDK; re-running it will reconcile any renames or removals.
+
+To regenerate:
+```bash
+cd codegen && go generate codegen.go
+```
+
+CI does not regenerate client code automatically. It trusts what is committed and validates it via `make build`, `make lint`, and `make test`. It is the contributor's responsibility to run codegen locally and include the updated `clients/` files in the same PR as the change that triggered the regeneration.
 
 Features or extensions in any other areas, especially the ones that are not backward compatible
 will not be considered. 
@@ -46,7 +59,7 @@ When making a PR, make sure:
 
 ## Maintainers:
 
-You can contact, send bug reports or features requests to the `aws-ccp-go` maintainers 
+You can contact, send bug reports or features requests to the `awesome` maintainers 
 by sending an email at: devops@touchbistro.com 
 
 Members of the *TouchBistro* Github org can alternatively create a ticket in the `DEVOPS` Jira project 

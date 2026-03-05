@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/TouchBistro/aws-ccp-go/clients/_ec2"
-	"github.com/TouchBistro/aws-ccp-go/providers"
+	"github.com/TouchBistro/awesome/clients/_ec2"
+	"github.com/TouchBistro/awesome/providers"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 )

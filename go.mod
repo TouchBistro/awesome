@@ -1,6 +1,6 @@
-module github.com/TouchBistro/aws-ccp-go
+module github.com/TouchBistro/awesome
 
-go 1.21
+go 1.25
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.27.0
@@ -43,3 +43,8 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+// Versions v0.0.1–v0.0.8 were published under the former module path
+// github.com/TouchBistro/aws-ccp-go and are not importable under
+// github.com/TouchBistro/awesome. Consumers should use v0.0.9 or later.
+retract [v0.0.1, v0.0.8]

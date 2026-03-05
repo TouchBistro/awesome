@@ -4,35 +4,40 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@4.0
 
-cache_key: &cache_key aws-ccp-go-20230530-{{ checksum "go.sum" }}
+cache_key: &cache_key awesome-20230530-{{ checksum "go.sum" }}
 
 executors:
   docker-go:
     docker:
-        - image: cimg/go:1.21.0
+        - image: 651264383976.dkr.ecr.us-east-1.amazonaws.com/cimg-go:1.25-build
+          aws_auth:
+            oidc_role_arn: ${AWS_IAM_ROLE}
 commands:
-  lint-test:
+  cache-setup:
     steps:
-      - checkout 
-      - aws-cli/setup:
-          role_session_name: circle-job
-          role_arn: $AWS_IAM_ROLE
       - restore_cache:
           name: Restore dep cache
           keys: 
             - *cache_key 
-      - run: 
-         name: Install dependencies
-         command: make setup
       - save_cache:
           name: Save dep cache 
           key: *cache_key
           paths: 
             - ~/go/pkg
-            - bin/golangci-lint
-      # - run:
-      #     name: Run linter
-      #     command: make lint
+  lint-test:
+    steps:
+      - run:
+          name: Run linter
+          command: make lint
+      - aws-cli/setup:
+          role_arn: arn:aws:iam::651264383976:role/buildit/circle-role
+          role_session_name: awesome-tests
+      - run: 
+          name: test aws cli status
+          command: aws sts get-caller-identity
+      - run: 
+          name: test aws cli status
+          command: echo ${AWS_CREDS_PROVIDER_TEST_ASSUME_ROLE}
       - run:
           name: Run test
           command: go test ./...
@@ -41,7 +46,7 @@ commands:
       - run: 
           name: Run go generate
           command: go generate ./codegen/codegen.go
-  build-code:
+  build:
     steps: 
       - run: 
           name: Build code 
@@ -51,18 +56,25 @@ jobs:
   lint-build-test:
     executor: docker-go
     steps:
+      - aws-cli/setup:
+          role_arn: arn:aws:iam::651264383976:role/buildit/circle-role
+          role_session_name: awesome-tests
+      - checkout 
+      - cache-setup
       - lint-test 
       - codegen
-      - build-code
+      - build
   release:
     executor: docker-go
-    steps: 
-      - lint-test 
-      - build-code
+    steps:
+      - checkout 
+      - run: 
+          name: Tag release in github
+          command: |
+            .circleci/tagger.sh
       - run:
-          name: tag & release
-          command: echo "releasing this branch"
-
+          name: cut release in github with goreleaser
+          command: goreleaser release -f .circleci/goreleaser.yml
 workflows:
   build-test-release:
     jobs:
@@ -72,7 +84,7 @@ workflows:
          context: org-global
          requires:
            - lint-build-test
-         filters: 
+         filters:
            branches:
              only:
                - master

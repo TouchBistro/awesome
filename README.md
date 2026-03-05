@@ -2,19 +2,19 @@
 
 [![GoDoc][1]][2] [![License: MIT][3]][4] [![CircleCI][5]][6] 
 
-[1]: https://pkg.go.dev/badge/github.com/evalphobia/aws-ccp-gor?utm_source=godoc
-[2]: https://pkg.go.dev/github.com/TouchBistro/aws-ccp-go
+[1]: https://pkg.go.dev/badge/github.com/TouchBistro/awesome?utm_source=godoc
+[2]: https://pkg.go.dev/github.com/TouchBistro/awesome
 [3]: https://img.shields.io/badge/License-MIT-blue.svg
 [4]: LICENSE
-[5]: https://dl.circleci.com/status-badge/img/gh/TouchBistro/aws-ccp-go/tree/master.svg?style=svg
-[6]: https://dl.circleci.com/status-badge/redirect/gh/TouchBistro/aws-ccp-go/tree/master
+[5]: https://dl.circleci.com/status-badge/img/gh/TouchBistro/awesome/tree/master.svg?style=svg
+[6]: https://dl.circleci.com/status-badge/redirect/gh/TouchBistro/awesome/tree/master
 
-# AWS Config & Clients Provider for Go `(aws-ccp-go)`
+# AWS Config & Clients Provider for Go `(awesome)`
 
 A lightweight wrapper on the **AWS SDK for Go V2**, Config & Clients API.
 
 
-`aws-ccp-go` is a light-weight wrapper on the [AWS SDK for Go v2](https://github.com/aws/aws-sdk-go-v2).
+`awesome` is a light-weight wrapper on the [AWS SDK for Go v2](https://github.com/aws/aws-sdk-go-v2).
 The goal of this module is to simplify the AWS Go SDK configuration sources. It also aims at making initialization of
 clients with the most commonly used configuration options, simple & straightforward. It eliminates the need of having 
 boilerpate code spread across the clients' code base, as well as making client initialization code across multiple 
@@ -38,12 +38,12 @@ variable, or shared config & credentials files, IAM role for ECS tasks or IAM ro
  import (
 
 	// intializes a `default` provider using AWS SDK defaults, with a DefaultCredsProvider
-	_ github.com/TouchBistro/aws-ccp-go 
+	_ github.com/TouchBistro/awesome 
 
 	// import the providers package to call the provider builder functions
-	github.com/TouchBistro/aws-ccp-go/providers 
+	github.com/TouchBistro/awesome/providers 
 	// import the clients/_ec2 package to call the ec2 client initializer
-	github.com/TouchBistro/aws-ccp-go/clients/_ec2 
+	github.com/TouchBistro/awesome/clients/_ec2 
  )
 
 		:
@@ -57,7 +57,7 @@ variable, or shared config & credentials files, IAM role for ECS tasks or IAM ro
 		:
 ```
 
-If multiple AWS credential sources are required, the `aws-ccp-go` API makes it simple to explicitly define 
+If multiple AWS credential sources are required, the `awesome` API makes it simple to explicitly define 
 the configuration without the need of constructing an `aws.Config` object in the client code using various builder 
 functions supplied with the AWS SDK.
 
@@ -82,14 +82,14 @@ the `EnvironmentCredsProvider` to configure this.
 This allows the client code to set up multiple named `CredsProvider`s that use different sets to environment variables 
 for fetching their separate static AWS credentials.
 
-As shown in examples, `aws-ccp-go` uses a concept of named ***Providers*** to encapsulate the `aws.Config` 
+As shown in examples, `awesome` uses a concept of named ***Providers*** to encapsulate the `aws.Config` 
 and can later be used to initialize clients for AWS services
 
 The module supplies client builders (helper functions) for all AWS services supported by the AWS SDK. These 
 methods use an internal map to maintain & return singleton clients per provider.
 
 The helper functions are exposed by service packages of this module under the `/clients/` path; and of the form:
-`github.com/TouchBistro/aws-ccp-go/clients/_<service_name>`. These functions initialize & return AWS service 
+`github.com/TouchBistro/awesome/clients/_<service_name>`. These functions initialize & return AWS service 
 clients using credentials encapsulated by these providers.
 
 <br>
@@ -117,7 +117,7 @@ There are several ways to supply credentials to an AWS SDK Client. This is done 
 object with the sources of credentials & other required configuration attributes. When no specific configuration options 
 are supplied, the SDK uses the default credentials chain as documented in the AWS SDK documentation.
 
-The `aws-ccp-go` uses the **Providers** abstraction to intialize `aws.Config` for a specific source. All providers 
+The `awesome` uses the **Providers** abstraction to intialize `aws.Config` for a specific source. All providers 
 have a name. The `NewXXXCredsProvider(...)` functions return a new `provider` or a non-nil error if something goes wrong 
 while configuring the provider. 
 
@@ -125,7 +125,7 @@ while configuring the provider.
 	pr, err := providers.NewDefaultCredsProvider(context.Background(), "provider1")
 
 ```
-This provider is also cached by the `aws-ccp-go` so it can be retrived in another location in the client code by 
+This provider is also cached by the `awesome` so it can be retrived in another location in the client code by 
 using the `provider.Default()` or `providers.Get(string)` functions 
 
 ```go
@@ -148,7 +148,7 @@ the `default` provider can be retrieved with
 ## `CredsProviderOptions`
 <br>
 
-The `NewXXXCredsProvider(...)` builder functions provided by the `aws-ccp-go` use the configuration parameters 
+The `NewXXXCredsProvider(...)` builder functions provided by the `awesome` use the configuration parameters 
 supplied using the [CredsProviderOptions](/providers/provider_creds_options.go) struct to initialize the corresponding 
 type of provider. Not all options are used for each type of provider. The type alias `CredsProviderOptionsFunc` acts as 
 functional options that can be passed to the `NewXXXCredsProvider` functions to set the required AWS `config.LoadOptions`
@@ -270,14 +270,14 @@ If the credentials are not found a non-nil `error` is returned.
 
 ### **Implicit `default` Environment Creds Provider**:
 
-The `default` named provider can be auto-initialized with an `EnvironmentCredsProvider` by reading the runtime command-line arguments passed on to the calling code. This can be achieved by importing the `init/cmd` package of the module with a blank identifier. See example below for the command-line flags that `aws-ccp-go` looks for for initialization. 
+The `default` named provider can be auto-initialized with an `EnvironmentCredsProvider` by reading the runtime command-line arguments passed on to the calling code. This can be achieved by importing the `init/cmd` package of the module with a blank identifier. See example below for the command-line flags that `awesome` looks for for initialization. 
 
 ```bash 
 
 % your_util --env 
 ```
 
-Here `your_util` is the binary created from the client code that imports `github.com/TouchBistro/aws-ccp-go/init/cmd` When `--env` flag is passed the `default` provider is initialized
+Here `your_util` is the binary created from the client code that imports `github.com/TouchBistro/awesome/init/cmd` When `--env` flag is passed the `default` provider is initialized
 using the AWS SDK standard environment variables for the access key id, secret access key and the session token. 
 
 The following example shows how to use non-standard environment variables to read the AWS access credentials.
@@ -310,14 +310,14 @@ supplied shared config files are not found a non-nil `error` is returned.
 
 ### **Implicit `default` Shared Configuration Creds Provider**:
 
-The `default` named provider can be auto-initialized with a `SharedConfigCredsProvider` by reading the runtime command-line arguments passed on to the calling code. This can be achieved by importing the `init/cmd` package of the module with a blank identifier. See example below for the command-line flags that `aws-ccp-go` looks for for initialization. 
+The `default` named provider can be auto-initialized with a `SharedConfigCredsProvider` by reading the runtime command-line arguments passed on to the calling code. This can be achieved by importing the `init/cmd` package of the module with a blank identifier. See example below for the command-line flags that `awesome` looks for for initialization. 
 
 ```bash 
 
 % your_util --profile someProfileName 
 ```
 
-Here `your_util` is the binary created from the client code that imports `github.com/TouchBistro/aws-ccp-go/init/cmd` When `--profile` flag is supplied with a value, the `default` provider is initialized using the AWS SDK shared configuration files for reading the AWS credentials. The default shared configuration files located in `~/.aws/config` & `~/.aws/credentials` are used.
+Here `your_util` is the binary created from the client code that imports `github.com/TouchBistro/awesome/init/cmd` When `--profile` flag is supplied with a value, the `default` provider is initialized using the AWS SDK shared configuration files for reading the AWS credentials. The default shared configuration files located in `~/.aws/config` & `~/.aws/credentials` are used.
 
 The following example shows how to use non-default shared configuration files
 
@@ -366,7 +366,7 @@ or you can supply account id and role name.
 ```
 ### **Implicit `default` Assume Role Configuration Creds Provider**:
 
-The `default` named provider can be auto-initialized with a `AssumeRoleCredsProvider` by reading the runtime command-line arguments passed on to the calling code. This can be achieved by importing the `init/cmd` package of the module with a blank identifier. See example below for the command-line flags that `aws-ccp-go` looks for for initialization. 
+The `default` named provider can be auto-initialized with a `AssumeRoleCredsProvider` by reading the runtime command-line arguments passed on to the calling code. This can be achieved by importing the `init/cmd` package of the module with a blank identifier. See example below for the command-line flags that `awesome` looks for for initialization. 
 
 When this option is used, the based proivider to assume the role is configured using the DefaultCredsProvider if not other implicit flags are supplied, or
 one of the other supported implicit provider configuration
@@ -392,7 +392,7 @@ For more details see [docs](./init/cmd/README.md)
 <br><br><br>
 # AWS Client Builder Functions
 
-Besides credentials, the `aws-ccp-go` module also supplies convenient builder functions for all AWS 
+Besides credentials, the `awesome` module also supplies convenient builder functions for all AWS 
 SDK supported clients. Each of these clients is in it's own package and must be imported to use the client 
 builder functions. The package names are consistent with the AWS SDK service name packages but with a 
 leading underscore `_`. The reason to use an underscore prefix in the name is to make is easier for these & AWS
@@ -406,31 +406,33 @@ SDK modules in client code & bloating the size of the resulting binaries unneces
 For example, just constructing a default provider & EC2 client wrapper results in a resulting binary size `8 MB`. 
 if the entire SDK was imported indirectly, this would go up to `68 MB` for just a few lines of client code. So 
 with this design, the size of the imported libraries in the final go binary generated for the client is no bigger 
-than what it would have been if the AWS SDK was directly used without the `aws-ccp-go` wrapper. The downside 
+than what it would have been if the AWS SDK was directly used without the `awesome` wrapper. The downside 
 is having to import individual client packages alongside each AWS SDK service package.
 
 All client wrapper packages are found under `/clients/` sub-directory in the repo.
 
-For instance to create a AWS Client for the `applicationautoscaling` service, the corresponding `aws-ccp-go`
+For instance to create a AWS Client for the `applicationautoscaling` service, the corresponding `awesome`
 packages that need to be imported will be:
 
 ```go 
 
 import (
 	// To auto initialize the 'default` provider only
-	_ "github.com/TouchBistro/aws-ccp-go"
+	_ "github.com/TouchBistro/awesome"
 
 	// To retrieve the default provider from the module
-	"github.com/TouchBistro/aws-ccp-go/providers"
+	"github.com/TouchBistro/awesome/providers"
 
 	// To construct applicationautoscaling service client 
-	"github.com/TouchBistro/aws-ccp-go/clients/_applicationautoscaling"
+	"github.com/TouchBistro/awesome/clients/_applicationautoscaling"
 
 	// To use the applicationauthoscaling AWS client provided data structures & functions
 	"github.com/aws/aws-sdk-go-v2/client/applicationauthoscaling"
 
 )
 ```
+> **Note:** `awesome` does not declare AWS service modules as dependencies in its own `go.mod`. After adding any `clients/_<service>` import, run `go mod tidy` (or `go get github.com/aws/aws-sdk-go-v2/service/<service>`) in your project to have the required AWS service module added to your `go.mod`.
+
 All client packages expose `4` helper functions: `Client()`, `Must()`, `Delete()` and `Refresh()`
 
 The `Client` function returns a singleton AWS service client. It uses the supplied `providers.CredsProvdier` 
@@ -444,7 +446,7 @@ and return a new instance in the next call to `Client`
 
 The `Refresh()` function discards the singleton client if it exists & recreates it.
 
-The `aws-ccp-go` supports basic configurartion out of the box. If more specific configuration is required, 
+The `awesome` supports basic configurartion out of the box. If more specific configuration is required, 
 functional options can be supplied to client builder methods for instance: AWS Region or Client Retry Attempts etc.  
 These options are service-specific & are of the form `func(*<client>.Options)`. If options are supplied, they are 
 forwarded as-is to the clients' `NewFromConfig(...)` builder functions.
